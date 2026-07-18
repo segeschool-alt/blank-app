@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONY PAY - Premium Earning App</title>
+    <!-- የቴሌግራም ኦፊሴላዊ ስክሪፕት -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- FontAwesome ለሚያምሩ አይኮኖች (Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Header Style */
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            margin-bottom: 20px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00ffcc, #0088cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #00ffcc;
+        }
+
+        /* Dashboard Balance Card */
+        .balance-card {
+            width: 100%;
+            background: linear-gradient(135deg, #16223f 0%, #0d162d 100%);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 255, 204, 0.1);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .balance-title {
+            font-size: 14px;
+            color: #8fa0c4;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .balance-amount span {
+            color: #00ffcc;
+        }
+
+        /* Action Buttons Inside Card */
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-recharge {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-withdraw {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Task Section Grid */
+        .section-title {
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            color: #8fa0c4;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .grid-container {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .grid-box {
+            background: #121c33;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .grid-box i {
+            font-size: 24px;
+            color: #00ffcc;
+            margin-bottom: 12px;
+        }
+
+        .grid-box h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .grid-box p {
+            font-size: 12px;
+            color: #8fa0c4;
+        }
+
+        /* Promo Banner Box */
+        .promo-box {
+            width: 100%;
+            background: linear-gradient(90deg, #1e1b4b 0%, #311042 100%);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .promo-text h4 {
+            font-size: 15px;
+            color: #f3e8ff;
+            margin-bottom: 4px;
+        }
+
+        .promo-text p {
+            font-size: 12px;
+            color: #c084fc;
+        }
+
+        .btn-invite {
+            background: #a855f7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-text">MONY PAY</div>
+        <div class="user-badge" id="username"><i class="fa-solid fa-user"></i> Loading...</div>
+    </div>
+
+    <!-- Main Balance Card -->
+    <div class="balance-card">
+        <div class="balance-title">Remaining Balance</div>
+        <div class="balance-amount">Br <span id="balance-val">0.00</span></div>
+        <div class="card-actions">
+            <button class="action-btn btn-recharge" onclick="tg.showAlert('Recharge System Coming Soon!')">
+                <i class="fa-solid fa-wallet"></i> Recharge
+            </button>
+            <button class="action-btn btn-withdraw" onclick="tg.showAlert('Withdrawal System Coming Soon!')">
+                <i class="fa-solid fa-money-bill-transfer"></i> Withdraw
+            </button>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="section-title">Computing Smart Hub</div>
+    <div class="grid-container">
+        <div class="grid-box" onclick="claimTask()">
+            <i class="fa-solid fa-microchip"></i>
+            <h4>Smart Mining</h4>
+            <p>Pending: +150 Br</p>
+        </div>
+        <div class="grid-box" onclick="tg.showAlert('Daily Check-in Successful! +10 Br')">
+            <i class="fa-solid fa-calendar-check"></i>
+            <h4>Daily Bonus</h4>
+            <p>Claim 10 Br Daily</p>
+        </div>
+    </div>
+
+    <!-- Referral Section -->
+    <div class="section-title">Affiliate Network</div>
+    <div class="promo-box">
+        <div class="promo-text">
+            <h4>Invite Friends & Earn</h4>
+            <p>Get 20% commission instantly</p>
+        </div>
+        <button class="btn-invite" onclick="generateLink()">Promote</button>
+    </div>
+
+    <script>
+        // ቴሌግራም ዌብ አፕ ማስጀመር
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+
+        // የተጠቃሚ መረጃ መጫን
+        const user = tg.initDataUnsafe?.user;
+        if(user) {
+            document.getElementById('username').innerText = user.first_name;
+        } else {
+            document.getElementById('username').innerText = "Guest User";
+        }
+
+        // ባላንስ ለመጨመር (Task)
+        let currentBalance = 0.00;
+        function claimTask() {
+            currentBalance += 150.00;
+            document.getElementById('balance-val').innerText = currentBalance.toFixed(2);
+            tg.showAlert("Success! You earned 150 Br from Smart Mining.");
+        }
+
+        // የሪፈራል ሊንክ
+        function generateLink() {
+            const userId = user ? user.id : '123456';
+            const botUsername = "EthioTaskPay_bot"; // እዚህ ጋር የራስህን Bot Username አስገባ
+            const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
+            
+            tg.showAlert(`Your Referral Link:\n${inviteLink}`);
+        }
+    </script>
+</body>
+</html>
