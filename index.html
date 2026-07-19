@@ -1,51 +1,92 @@
 <!DOCTYPE html>
-<html lang="am">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click Pay App</title>
+    <title>Click Pay</title>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; padding: 20px; margin: 0; }
-        .header { color: #22d3ee; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .balance-card { background: #1e293b; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #334155; }
-        .balance-amount { font-size: 32px; font-weight: bold; margin: 10px 0; color: #fff; }
-        .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
-        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-        .recharge { background: #10b981; color: white; }
-        .withdraw { background: #334155; color: white; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .task-box { background: #1e293b; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #334155; }
+        body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .lux-header { background: linear-gradient(45deg, #22d3ee, #818cf8); padding: 20px; border-radius: 15px; font-size: 24px; font-weight: bold; margin-bottom: 20px; color: white; }
+        .balance-card { background: #1e293b; padding: 20px; border-radius: 15px; border: 1px solid #334155; }
+        .btn { padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin: 5px; color: white; }
+        .recharge { background: #10b981; }
+        .withdraw { background: #ef4444; }
+        .task-box { background: #1e293b; padding: 15px; border-radius: 10px; margin-top: 10px; border: 1px solid #334155; }
+        .nav-btn { background: #3b82f6; width: 100%; margin-top: 10px; }
+        input { padding: 10px; border-radius: 5px; border: none; width: 80%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="header">CLICK PAY</div>
-
-    <div class="balance-card">
-        <div>REMAINING BALANCE</div>
-        <div class="balance-amount">Br 7,000.00</div>
-        <div class="btn-group">
-            <button class="btn recharge">Recharge</button>
-            <button class="btn withdraw" onclick="showEmptyButtons()">Withdraw</button>
+    <!-- ዋና ገጽ -->
+    <div id="home-page">
+        <div class="lux-header">WELCOME TO CLICK PAY</div>
+        <div class="balance-card">
+            <div>REMAINING BALANCE</div>
+            <h1 style="color: #22d3ee;">Br 7,000.00</h1>
+            <button class="btn recharge" onclick="showRecharge()">Recharge</button>
+            <button class="btn withdraw" onclick="showWithdraw()">Withdraw</button>
         </div>
+
+        <div class="task-box">
+            <p>Join this channel and claim your daily bonus!</p>
+            <button class="btn" style="background: #fbbf24;" onclick="window.open('https://t.me/click_Pay_official_Channel')">Join</button>
+        </div>
+
+        <button class="btn nav-btn" onclick="window.open('https://t.me/click_Pay_official_Channel')">Official Channel</button>
+        <button class="btn nav-btn" onclick="window.open('https://t.me/CLIKPAY_BOT')">Official Bot</button>
     </div>
 
-    <!-- ይህ ክፍል Withdraw ሲነካ ይዘመናል -->
-    <div id="dynamic-content" class="grid">
-        <div class="task-box">Smart Mining</div>
-        <div class="task-box">Daily Bonus</div>
+    <!-- ሪቻርጅ ገጽ -->
+    <div id="recharge-page" style="display:none;">
+        <h3>Welcome to Click Pay Recharge</h3>
+        <p>Select Country:</p>
+        <button class="btn" onclick="showBanks('Ethiopia')">Ethiopia</button>
+        <div id="bank-list"></div>
+        <button class="btn" onclick="goHome()">Back</button>
+    </div>
+
+    <!-- ዊዝድሮ ገጽ -->
+    <div id="withdraw-page" style="display:none;">
+        <h3>Select Payment Method</h3>
+        <button class="btn" onclick="showCountryForm()">Ethiopia</button>
+        <button class="btn">PayPal</button>
+        <button class="btn">Binance</button>
+        <div id="withdraw-form" style="display:none; margin-top:20px;">
+            <input type="text" id="acc-name" placeholder="Enter Name (Letters only)" onkeypress="return /[a-zA-Z ]/i.test(event.key)">
+            <input type="number" id="acc-num" placeholder="Account Number (Numbers only)">
+            <button class="btn" style="background: #10b981;" onclick="alert('Success!')">Submit</button>
+        </div>
+        <button class="btn" onclick="goHome()">Back</button>
     </div>
 
     <script>
-        function showEmptyButtons() {
-            const container = document.getElementById('dynamic-content');
-            // ይዘቱን ባዶ አድርጎ 4 ባዶ በተኖችን ይፈጥራል
-            container.innerHTML = `
-                <div class="task-box" style="height:50px;"></div>
-                <div class="task-box" style="height:50px;"></div>
-                <div class="task-box" style="height:50px;"></div>
-                <div class="task-box" style="height:50px;"></div>
-            `;
+        function showRecharge() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('recharge-page').style.display = 'block';
+        }
+        function showWithdraw() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('withdraw-page').style.display = 'block';
+        }
+        function goHome() {
+            location.reload();
+        }
+        function showBanks(country) {
+            if(country === 'Ethiopia') {
+                document.getElementById('bank-list').innerHTML = `
+                    <div class="task-box">
+                        <p>Recharge to Abraham</p>
+                        <p>CBE: 1000xxxxxx</p>
+                        <p>Abyssinia: 199288423</p>
+                        <p>BOA: 555xxxxxx</p>
+                        <p>Telebirr: 09xxxxxxxx</p>
+                        <p>Dashen: 222xxxxxx</p>
+                    </div>`;
+            }
+        }
+        function showCountryForm() {
+            document.getElementById('withdraw-form').style.display = 'block';
         }
     </script>
 </body>
