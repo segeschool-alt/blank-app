@@ -3,75 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click Pay Mini App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Click Pay</title>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; padding: 20px; }
-        .hidden { display: none; }
-        .card { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #3b82f6; }
-        button { background: #3b82f6; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 5px; }
-        input, select { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; }
+        body { background: linear-gradient(135deg, #003087 0%, #0070ba 100%); color: #ffffff; font-family: sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 400px; margin: auto; text-align: center; }
+        
+        .billboard { background-color: #ffffff; color: #003087; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border: 2px solid #f59e0b; }
+
+        .balance-card { background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-top: 20px; margin-bottom: 20px; }
+        
+        .btn-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background-color: #f59e0b; text-decoration: none; }
+        
+        /* Payment Section */
+        .payment-container { background-color: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; color: #333; }
+        .join-msg { font-size: 14px; font-weight: bold; margin-bottom: 15px; color: #d32f2f; }
+        .btn-join-tg { background-color: #0088cc; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+        
+        .payment-grid { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .btn-pay { padding: 8px 12px; border: none; border-radius: 6px; font-size: 12px; font-weight: bold; color: white; opacity: 0.8; }
+        
+        .how-to-use { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; text-align: left; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2); }
+        .how-to-use h3 { margin-top: 0; color: #f59e0b; text-align: center; }
+        
+        .card { background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-copy { background-color: #0070ba; padding: 8px 15px; border-radius: 5px; border: none; color: white; cursor: pointer; }
+        
+        #copyFeedback { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 20px; display: none; }
     </style>
 </head>
 <body>
-    <div id="gatekeeper" class="hidden">
-        <h2>Welcome to Click Pay</h2>
-        <button onclick="window.open('https://t.me/click_Pay_official_Channel', '_blank')">Join Channel to Continue</button>
+
+<div class="container">
+    <h1>Click Pay</h1>
+    <p>Your Trusted Digital Earning Platform</p>
+
+    <div class="billboard">
+        🚀 Start earning daily by joining our Click Pay bot!
     </div>
 
-    <div id="dashboard" class="hidden">
-        <h2 id="welcome"></h2>
-        <div class="card">Balance: <span id="balance">0</span> Birr</div>
-        
-        <h3>Referrals</h3>
-        <button onclick="copyLink()">Copy Referral Link</button>
-
-        <h3>Tasks</h3>
-        <button onclick="verifyTask(10)">Join Channel (+10 Birr)</button>
-
-        <h3>Withdraw</h3>
-        <select id="method"><option>Telebirr</option><option>CBE</option><option>BoA</option></select>
-        <input id="accNum" placeholder="Account Number">
-        <input id="accName" placeholder="Account Name">
-        <button onclick="withdraw()">Submit Withdrawal</button>
+    <div class="balance-card">
+        <h2 style="color: #f59e0b;">Minimum Withdraw: 500 Points</h2>
     </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        const userId = tg.initDataUnsafe.user.id;
-        const api = "http://localhost:3000";
+    <div class="btn-row">
+        <a href="https://t.me/click_Pay_official_Channel" target="_blank" class="btn">Join Channel</a>
+        <a href="https://t.me/CLIKPAY_BOT" target="_blank" class="btn">Join Bot</a>
+    </div>
 
-        async function init() {
-            const res = await fetch(`${api}/api/check-member/${userId}`);
-            const data = await res.json();
-            if (data.isMember) {
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('welcome').innerText = `Hello, ${tg.initDataUnsafe.user.first_name}`;
-            } else {
-                document.getElementById('gatekeeper').classList.remove('hidden');
-            }
-        }
+    <div class="payment-container">
+        <p class="join-msg">Please first join Click Pay Channel and Bot!</p>
+        <a href="https://t.me/CLIKPAY_BOT" target="_blank" class="btn-join-tg">Join & Proceed</a>
+        <div class="payment-grid">
+            <button class="btn-pay" style="background: #003087;">PayPal</button>
+            <button class="btn-pay" style="background: #b71c1c;">CBE</button>
+            <button class="btn-pay" style="background: #1976d2;">BOA</button>
+            <button class="btn-pay" style="background: #00796b;">Telebirr</button>
+        </div>
+    </div>
 
-        async function verifyTask(amount) {
-            const res = await fetch(`${api}/api/update-balance`, { method: 'POST', body: JSON.stringify({ userId, amount }), headers: {'Content-Type': 'application/json'} });
-            const data = await res.json();
-            document.getElementById('balance').innerText = data.balance;
-            tg.showPopup({ message: "Task Verified!" });
-        }
+    <div class="how-to-use">
+        <h3>How to use?</h3>
+        <p style="font-size: 14px; line-height: 1.6;">
+            Join our channel, complete the available tasks, and withdraw your points to cash via the Click Pay bot.
+        </p>
+    </div>
 
-        function copyLink() {
-            navigator.clipboard.writeText(`https://t.me/YourBot?start=ref_${userId}`);
-            tg.showPopup({ message: "Link copied!" });
-        }
+    <div style="text-align: left; margin-bottom: 10px;">Refer & Earn</div>
+    <div class="card">
+        <span id="referLink" style="font-size: 12px;">https://t.me/CLIKPAY_BOT</span>
+        <button class="btn-copy" onclick="copyText()">Copy</button>
+    </div>
+</div>
 
-        async function withdraw() {
-            const data = { userId, method: document.getElementById('method').value, accountNum: document.getElementById('accNum').value, accountName: document.getElementById('accName').value };
-            await fetch(`${api}/api/withdraw`, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} });
-            tg.showPopup({ message: "Withdrawal request sent to admin!" });
-        }
+<div id="copyFeedback">Copied!</div>
 
-        init();
-    </script>
+<script>
+    function copyText() {
+        const text = "https://t.me/CLIKPAY_BOT";
+        navigator.clipboard.writeText(text);
+        const feedback = document.getElementById("copyFeedback");
+        feedback.style.display = "block";
+        setTimeout(() => { feedback.style.display = "none"; }, 2000);
+    }
+</script>
+
 </body>
 </html>
