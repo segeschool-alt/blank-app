@@ -1,48 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="am">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Pay</title>
-    <!-- Tailwind CSS for modern design -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
 
-    <!-- Header -->
-    <header class="bg-blue-900 p-4 text-center text-white text-2xl font-bold shadow-lg">
-        CLICK PAY
-    </header>
+    <!-- ቻናል መቀላቀል ግዴታ የሆነበት የዌልካም ስክሪን -->
+    <div id="join-screen" class="screen">
+        <h1>እንኳን ወደ Click Pay በደህና መጡ!</h1>
+        <p>ከመቀጠልዎ በፊት ቻናላችንን መቀላቀል አለብዎት።</p>
+        <button id="join-btn" onclick="checkJoin()">ቻናል ለመቀላቀል እዚህ ይጫኑ</button>
+    </div>
 
-    <div class="p-4">
-        <!-- Dashboard (Ads/Stats) -->
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
-                <p class="text-sm text-gray-500">Active Ads</p>
-                <h2 class="text-xl font-bold">12</h2>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
-                <p class="text-sm text-gray-500">Total Balance</p>
-                <h2 class="text-xl font-bold">$45.00</h2>
-            </div>
+    <!-- ዋና ገጽ (በነባሪ ተደብቋል) -->
+    <div id="main-content" class="screen" style="display:none;">
+        <header><h1>CLICK PAY</h1></header>
+        
+        <div class="stats">
+            <div class="card">Active Ads: 12</div>
+            <div class="card">Total Balance: $45.00</div>
         </div>
 
-        <!-- Main Buttons -->
-        <div class="flex flex-col gap-4">
-            <button class="w-full bg-blue-600 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-blue-700 transition">
-                MY BALANCE
-            </button>
-            <button onclick="showWithdrawOptions()" class="w-full bg-green-600 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-green-700 transition">
-                WITHDRAW TO BANK
-            </button>
+        <div class="menu-buttons">
+            <button class="btn" onclick="showPage('home')">Home</button>
+            <button class="btn" onclick="showPage('balance')">My Balance</button>
+            <button class="btn" onclick="showPage('withdraw')">Withdraw to Bank</button>
+            <button class="btn" onclick="showPage('tasks')">More Tasks</button>
         </div>
     </div>
 
-    <script>
-        function showWithdrawOptions() {
-            alert("የሀገር መምረጫ ገጽ ይከፈታል...");
-            // ወደፊት እዚህ ጋር ነው የሀገር መምረጫውን የምንጨምረው
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
