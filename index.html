@@ -1,77 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="am">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click Pay Mini App</title>
+    <title>Click Pay Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; padding: 20px; }
-        .hidden { display: none; }
-        .card { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #3b82f6; }
-        button { background: #3b82f6; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 5px; }
-        input, select { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; }
+        :root { --bg: #0f172a; --card: #1e293b; --accent: #3b82f6; --gold: #fbbf24; --green: #10b981; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 20px; }
+        
+        .header-text { text-align: center; margin-bottom: 20px; font-size: 1.5rem; font-weight: bold; }
+        .greeting { text-align: center; margin-bottom: 10px; color: #94a3b8; }
+        
+        .balance-card { background: var(--card); padding: 30px 20px; border-radius: 20px; text-align: center; border: 2px solid var(--gold); margin-bottom: 20px; }
+        .balance-label { margin-bottom: 10px; }
+        .balance-val { font-size: 2.2rem; font-weight: bold; color: var(--gold); }
+        
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .btn { padding: 15px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-blue { background: var(--accent); }
+        .btn-green { background: var(--green); }
+        
+        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+        .task-card { background: var(--card); padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        
+        /* Modal Style */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 85%; }
     </style>
 </head>
 <body>
-    <div id="gatekeeper" class="hidden">
-        <h2>Welcome to Click Pay</h2>
-        <button onclick="window.open('https://t.me/click_Pay_official_Channel', '_blank')">Join Channel to Continue</button>
+
+    <div class="header-text">Click Pay Dashboard</div>
+    <div class="greeting">ሰላም, ተጠቃሚ</div>
+
+    <div class="balance-card">
+        <div class="balance-label">ጠቅላላ ቀሪ ሂሳብ</div>
+        <div class="balance-val">1,500 Birr</div>
     </div>
 
-    <div id="dashboard" class="hidden">
-        <h2 id="welcome"></h2>
-        <div class="card">Balance: <span id="balance">0</span> Birr</div>
-        
-        <h3>Referrals</h3>
-        <button onclick="copyLink()">Copy Referral Link</button>
-
-        <h3>Tasks</h3>
-        <button onclick="verifyTask(10)">Join Channel (+10 Birr)</button>
-
-        <h3>Withdraw</h3>
-        <select id="method"><option>Telebirr</option><option>CBE</option><option>BoA</option></select>
-        <input id="accNum" placeholder="Account Number">
-        <input id="accName" placeholder="Account Name">
-        <button onclick="withdraw()">Submit Withdrawal</button>
+    <div class="actions-grid">
+        <button class="btn btn-blue" onclick="alert('How to Use clicked')">How to Use</button>
+        <button class="btn btn-green" onclick="alert('Withdraw clicked')">Withdraw</button>
     </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        const userId = tg.initDataUnsafe.user.id;
-        const api = "http://localhost:3000";
+    <div class="section-title">ተጨማሪ ስራዎች</div>
+    
+    <div class="task-card">
+        <span>Watch Ads (Click Pay)</span>
+        <button class="btn btn-blue" onclick="window.open('https://t.me/CLIKPAY_BOT', '_blank')">View</button>
+    </div>
+    
+    <div class="task-card">
+        <span>Follow Page (Zeri Plus)</span>
+        <button class="btn btn-blue" onclick="window.open('https://t.me/ZERIPLUSFOR', '_blank')">Follow</button>
+    </div>
 
-        async function init() {
-            const res = await fetch(`${api}/api/check-member/${userId}`);
-            const data = await res.json();
-            if (data.isMember) {
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('welcome').innerText = `Hello, ${tg.initDataUnsafe.user.first_name}`;
-            } else {
-                document.getElementById('gatekeeper').classList.remove('hidden');
-            }
-        }
-
-        async function verifyTask(amount) {
-            const res = await fetch(`${api}/api/update-balance`, { method: 'POST', body: JSON.stringify({ userId, amount }), headers: {'Content-Type': 'application/json'} });
-            const data = await res.json();
-            document.getElementById('balance').innerText = data.balance;
-            tg.showPopup({ message: "Task Verified!" });
-        }
-
-        function copyLink() {
-            navigator.clipboard.writeText(`https://t.me/YourBot?start=ref_${userId}`);
-            tg.showPopup({ message: "Link copied!" });
-        }
-
-        async function withdraw() {
-            const data = { userId, method: document.getElementById('method').value, accountNum: document.getElementById('accNum').value, accountName: document.getElementById('accName').value };
-            await fetch(`${api}/api/withdraw`, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} });
-            tg.showPopup({ message: "Withdrawal request sent to admin!" });
-        }
-
-        init();
-    </script>
 </body>
 </html>
