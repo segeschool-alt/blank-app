@@ -5,34 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Pay</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-color: #1e1e1e; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .screen { display: none; }
+        #join-screen { display: block; }
+        .btn { background-color: #007bff; color: white; border: none; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        .card-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+        .card { background-color: #333; padding: 20px; border-radius: 10px; width: 40%; }
+        .action-btn { background-color: #28a745; width: 90%; padding: 15px; margin: 10px 0; border-radius: 8px; border: none; color: white; font-weight: bold; }
+    </style>
 </head>
 <body>
 
-    <!-- ቻናል መቀላቀል ግዴታ የሆነበት የዌልካም ስክሪን -->
+    <!-- 1. ጆይን ስክሪን -->
     <div id="join-screen" class="screen">
         <h1>እንኳን ወደ Click Pay በደህና መጡ!</h1>
         <p>ከመቀጠልዎ በፊት ቻናላችንን መቀላቀል አለብዎት።</p>
-        <button id="join-btn" onclick="checkJoin()">ቻናል ለመቀላቀል እዚህ ይጫኑ</button>
+        <button class="btn" onclick="goToMain()">ቻናል ተቀላቅያለሁ</button>
     </div>
 
-    <!-- ዋና ገጽ (በነባሪ ተደብቋል) -->
-    <div id="main-content" class="screen" style="display:none;">
-        <header><h1>CLICK PAY</h1></header>
-        
-        <div class="stats">
-            <div class="card">Active Ads: 12</div>
-            <div class="card">Total Balance: $45.00</div>
+    <!-- 2. ዋና ገጽ -->
+    <div id="main-content" class="screen">
+        <h2 style="color: #007bff;">CLICK PAY</h2>
+        <div class="card-container">
+            <div class="card">Active Ads<br><b>12</b></div>
+            <div class="card">Total Balance<br><b>$45.00</b></div>
         </div>
-
-        <div class="menu-buttons">
-            <button class="btn" onclick="showPage('home')">Home</button>
-            <button class="btn" onclick="showPage('balance')">My Balance</button>
-            <button class="btn" onclick="showPage('withdraw')">Withdraw to Bank</button>
-            <button class="btn" onclick="showPage('tasks')">More Tasks</button>
+        <button class="action-btn" onclick="alert('Balance Page')">MY BALANCE</button>
+        <button class="action-btn" style="background-color: #dc3545;" onclick="alert('Withdraw Page')">WITHDRAW TO BANK</button>
+        <div class="card-container">
+            <button class="action-btn">NORMAL TASK</button>
+            <button class="action-btn">VIP TASK</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function goToMain() {
+            document.getElementById('join-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
